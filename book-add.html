@@ -1,0 +1,40 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.0.1/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.0.1/js/bootstrap.min.js"></script>
+</head>
+<body class="container">
+<h1 th:text="${pageName}"></h1>
+
+<div class="col-md-3"></div>
+<div class="col-md-4">
+    <form th:object="${book}" method="post" th:action="@{/books}">
+        <div class="mb-3">
+            <label for="exampleInputTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" required th:field="*{title}" id="exampleInputTitle"
+                   aria-describedby="nameHelp">
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputAuthor" class="form-label">Author</label>
+            <input type="text" class="form-control" required th:field="*{author}" id="exampleInputAuthor"
+                   aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text"></div>
+            <span th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="text-danger"></span>
+
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputYear" class="form-label">Year</label>
+            <input type="text" th:field="*{year}" required class="form-control" id="exampleInputYear">
+            <span th:if="${#fields.hasErrors('year')}" th:errors="*{year}" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPages" class="form-label">Pages</label>
+            <input type="text" th:field="*{pages}" required class="form-control" id="exampleInputPages">
+            <span th:if="${#fields.hasErrors('pages')}" th:errors="*{pages}" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+</body>
+</html>
