@@ -2,15 +2,19 @@ package book.demo.book_demo.service;
 
 import book.demo.book_demo.exception.BadRequestException;
 import book.demo.book_demo.exception.NotFoundException;
+import book.demo.book_demo.model.BookSearch;
 import book.demo.book_demo.repository.BookRepository;
 import book.demo.book_demo.model.Book;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.data.domain.ExampleMatcher.matchingAll;
 
 @Transactional
 @Service
@@ -23,6 +27,18 @@ public class BookDBService implements BookRecordService {
     public Book register(Book book) {
         return bookRepository.save(book);
     }
+
+    public List<Book> search(BookSearch bookSearch) {
+        Book book = new Book();
+        book.setTitle(bookSearch.getTitle());
+        book.setAuthor(bookSearch.getAuthor());
+        book.setYear(bookSearch.getYear());
+        book.setPages(bookSearch.getPages());
+
+        Example<Book> studentExample = Example.of(book, matchingAll().withIgnoreNullValues());
+        return bookRepository.findAll(studentExample);
+    }
+
 
     @Override
     public Collection<Book> getAll() {

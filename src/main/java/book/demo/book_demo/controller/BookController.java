@@ -1,5 +1,6 @@
 package book.demo.book_demo.controller;
 
+import book.demo.book_demo.model.BookSearch;
 import book.demo.book_demo.service.BookRecordService;
 import book.demo.book_demo.model.Book;
 import lombok.RequiredArgsConstructor;
@@ -11,27 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 
+
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping (value = "/books", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/books", produces = APPLICATION_JSON_VALUE)
 public class BookController {
 
 
     private final BookRecordService bookRecordService;
 
-    @GetMapping("/welcome")
-    public String welcome(Model map, Book book) {
-        map.addAttribute("welcomeMessage", "Hello! Welcome to book inventory!");
-
-        return "welcome";
-    }
 
     @GetMapping
     public String index(Model model) {
+        model.addAttribute("pageName", "Hello! Welcome to book inventory!");
         model.addAttribute("books", bookRecordService.getAll());
         return "index";
+    }
+
+    @GetMapping(value = "/searches")
+    public String search(@Valid BookSearch bookSearch, Model model) { //@RequestBody
+        model.addAttribute("pageName", "Book Search");
+        model.addAttribute("books", bookRecordService.getAll());
+//        List<Book> books = bookRecordService.search(bookSearch);
+        return "search";
     }
 
     @GetMapping("/book-add")
