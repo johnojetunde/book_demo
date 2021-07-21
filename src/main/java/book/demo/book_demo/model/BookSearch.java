@@ -3,10 +3,6 @@ package book.demo.book_demo.model;
 import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
-
 @Data
 public class BookSearch {
     private String title;

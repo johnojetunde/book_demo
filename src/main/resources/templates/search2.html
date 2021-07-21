@@ -11,13 +11,13 @@
     <form th:object="${bookSearch}" method="post" th:action="@{/books/searches2}">
         <div class="mb-3">
             <label for="exampleInputTitle" class="form-label">Search by title</label>
-            <input type="text" class="form-control"  th:field="*{title}" id="exampleInputTitle"
+            <input type="text" class="form-control" th:field="*{title}" id="exampleInputTitle"
                    aria-describedby="nameHelp">
             <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label for="exampleInputAuthor" class="form-label">Search by author</label>
-            <input type="text" class="form-control"  th:field="*{author}" id="exampleInputAuthor"
+            <input type="text" class="form-control" th:field="*{author}" id="exampleInputAuthor"
                    aria-describedby="usernameHelp">
             <div id="usernameHelp" class="form-text"></div>
             <span th:if="${#fields.hasErrors('author')}" th:errors="*{author}" class="text-danger"></span>
