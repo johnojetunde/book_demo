@@ -22,9 +22,9 @@ public class Book {
     @Positive (message = "year must be positive")
     @Min (value=1000, message = "invalid year")
     @Max (value=2021, message = "invalid year")
-    private int year;
+    private Integer year;
     @NotNull(message = "Pages are required")
-    private int pages;
+    private Integer pages;
 
 
 }

@@ -1,6 +1,7 @@
 package book.demo.book_demo.model;
 
 import lombok.Data;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -10,9 +11,14 @@ import javax.validation.constraints.Positive;
 public class BookSearch {
     private String title;
     private String author;
-    @Positive(message = "year must be positive")
-    @Min(value=1000, message = "invalid year")
-    @Max(value=2021, message = "invalid year")
-    private int year;
-    private int pages;
+    private Integer year;
+    private Integer pages;
+
+    public String getAuthor() {
+        return Strings.isNotBlank(author) ? author : null;
+    }
+
+    public String getTitle() {
+        return Strings.isNotBlank(title) ? title : null;
+    }
 }
