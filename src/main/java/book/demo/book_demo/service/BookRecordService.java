@@ -13,7 +13,7 @@ public interface BookRecordService {
 
 
     Book register(Book book);
-    Collection<Book> getAll();
+    List<Book> getAll();
     Book getById(Long id);
     Book updateBook(Long id, Book updatedBook);
     void delete(Long id);
