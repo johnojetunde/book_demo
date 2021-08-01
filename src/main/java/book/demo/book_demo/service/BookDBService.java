@@ -41,7 +41,7 @@ public class BookDBService implements BookRecordService {
 
 
     @Override
-    public Collection<Book> getAll() {
+    public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
@@ -53,7 +53,7 @@ public class BookDBService implements BookRecordService {
     @Override
     public Book updateBook(Long id, Book updatedBook) {
         Book existingBook = bookRepository.findById(id)
-                .orElseThrow(() -> new BadRequestException("Invalid student id " + id));
+                .orElseThrow(() -> new BadRequestException("Invalid book id " + id));
 
         existingBook.setTitle(updatedBook.getTitle());
         existingBook.setAuthor(updatedBook.getAuthor());
@@ -78,7 +78,7 @@ public class BookDBService implements BookRecordService {
     public List<Book> findAllByIdBetween(Long startId, Long endId){
         List <Book> result = bookRepository.findAllByIdBetween(startId,endId);
         if (result.isEmpty()){
-           throw new BadRequestException("There is no student with such id");
+           throw new BadRequestException("There is no book with such id");
         }
         return result;
     }
@@ -87,7 +87,7 @@ public class BookDBService implements BookRecordService {
     public  List<Book> findByTitleAndAuthor( String title, String author){
         List <Book> result = bookRepository.findByTitleAndAuthor(title,author);
         if (result.isEmpty()){
-           throw new BadRequestException("There is no such students");
+           throw new BadRequestException("There is no such books");
         }
         return result;
     }

@@ -1,7 +1,9 @@
 package book.demo.book_demo.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -9,6 +11,8 @@ import javax.validation.constraints.*;
 @Data
 @Entity
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
