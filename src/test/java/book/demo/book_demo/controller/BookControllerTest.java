@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
@@ -21,8 +22,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookController.class)
@@ -50,12 +50,15 @@ class BookControllerTest {
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("index"))
                 .andExpect(content().json("[{id:1,title:Book1,author:Author1,year:1999,pages:100}," +
                         "{id:2,title:Book2,author:Author2,year:1998,pages:101}," +
                         "{id:3,title:Book3,author:Author3,year:1997,pages:102}]"))
                 .andReturn();
 
+
     }
+
 
 
     @Test
@@ -67,6 +70,7 @@ class BookControllerTest {
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("search2"))
                 .andReturn();
 
     }
@@ -87,6 +91,7 @@ class BookControllerTest {
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("result"))
                 .andExpect(content().json("[{id:1,title:Book1,author:Author1,year:1999,pages:100}," +
                         "{id:2,title:Book1,author:Author1,year:1998,pages:101}]"))
                 .andReturn();
@@ -103,30 +108,35 @@ class BookControllerTest {
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("book-add"))
                 .andReturn();
     }
 
     @Test
     void deleteById() throws Exception {
+        doNothing().when(bookRecordService).delete(11L);
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/books/delete/1")
+                .get("/books/delete/{id}", 11)
                 .accept(MediaType.APPLICATION_JSON);
 
-        MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andReturn();
+        ResultActions result = mockMvc.perform(request)
+//                .andExpect(status().isOk())
+                .andExpect(redirectedUrl("/books"));
     }
 
     @Test
     void editById() throws Exception {
+        when (bookRecordService.getById(11L)).thenReturn(new Book (11L, "Book1", "Author1", 1001,100));
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/books/edit/1")
+                .get("/books/edit/{id}", 11)
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("book-edit"))
                 .andReturn();
 
+        verify(bookRecordService).getById(11L);
     }
 
     @Test
@@ -135,11 +145,12 @@ class BookControllerTest {
                 .thenReturn(new Book(1L, "Book1", "Author1", 1998, 100));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/books/book-add")
+                .post("/books")
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("book-add"))
                 .andExpect(content().json("{id:1,title:Book1,author:Author1,year:1999,pages:100}"))
                 .andReturn();
     }
@@ -152,11 +163,12 @@ class BookControllerTest {
 
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/books/update/1")
+                .post("/books/update/{id}", 1)
                 .accept(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
+                .andExpect(view().name("book-edit"))
                 .andExpect(content().json("{id:1,title:Book1,author:Author1,year:1999,pages:100}"))
                 .andReturn();
 
